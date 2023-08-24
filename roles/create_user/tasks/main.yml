@@ -1,7 +1,7 @@
 ---
 - name: Configure DPA user
   when: dpa_username is defined
-  become: yes
+  become: true
   block:
     - name: Create user {{ dpa_username }}
       ansible.builtin.user:
@@ -10,11 +10,11 @@
         state: present
         create_home: true
 
-    - name: Grant {{ dpa_username }} sudo role
+    - name: Grant sudo role to {{ dpa_username }}
       ansible.builtin.lineinfile:
         state: present
-        create: yes
-        mode: 0440
+        create: true
+        mode: "0440"
         path: "/etc/sudoers.d/80-cyberark-dpa"
         line: "{{ dpa_username }} ALL=(ALL) NOPASSWD:ALL"
         validate: "/usr/sbin/visudo -cf %s"

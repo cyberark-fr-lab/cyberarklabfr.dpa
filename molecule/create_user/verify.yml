@@ -2,6 +2,9 @@
 - name: Verify
   hosts: all
   tasks:
-    - include_tasks: verify/sudoers.yml
-    - include_tasks: verify/user.yml
+    - name: Verify - Sudoers file is created
+      ansible.builtin.include_tasks: verify/sudoers.yml
+
+    - name: Verify - Users are created
+      ansible.builtin.include_tasks: verify/user.yml
       loop: "{{ dpa_users }}"

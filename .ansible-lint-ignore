@@ -1,0 +1,3 @@
+# This file contains ignores rule violations for ansible-lint
+molecule/create_user/converge.yml var-naming[no-role-prefix]
+molecule/install_ca/converge.yml var-naming[no-role-prefix]

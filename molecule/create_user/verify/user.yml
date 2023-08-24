@@ -1,19 +1,20 @@
 ---
-- name: Verify - {{ item.username }} user exists
-  become: yes
+- name: Verify - Existence of {{ item.username }}
+  become: true
   ansible.builtin.getent:
     database: passwd
     key: "{{ item.username }}"
     fail_key: true
 
-- name: Verify - Has {{ item.username }} sudo permission?
+- name: Test sudo permissions for user {{ item.username }}
   become: true
   become_user: "{{ item.username }}"
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "sudo id"
   register: id_output
   failed_when: false
+  changed_when: false
 
-- name: Verify - {{ item.username }} has{{ ' no' if not item.sudo }} sudo permissions
+- name: Verify - Sudo permission of {{ item.username }}
   ansible.builtin.assert:
     that: "id_output.rc == {{ 0 if item.sudo else 1 }}"

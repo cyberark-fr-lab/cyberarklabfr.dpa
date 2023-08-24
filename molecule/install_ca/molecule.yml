@@ -20,7 +20,7 @@ provisioner:
         test_isp_pass: ${TEST_DPA_PASS}
         test_dpa_workspace_type: ${TEST_DPA_WK_TYPE}
         test_dpa_workspace_id: ${TEST_DPA_WK_ID}
-        
+
 platforms:
   - name: molecule_cnt_dpa_install_ca
     image: molecule_img_dpa_install_ca

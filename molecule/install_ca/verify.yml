@@ -3,7 +3,7 @@
   hosts: all
   tasks:
     - name: Verify - Certificate authority installed
-      become: yes
+      become: true
       block:
         - name: Search for existing TrustedUserCAKeys entry
           ansible.builtin.shell:
@@ -26,7 +26,7 @@
             that: dpa_ca_stat.stat.exists
 
         - name: Cat certificate authority file
-          ansible.builtin.shell:
+          ansible.builtin.command:
             cmd: "cat {{ search_trustedusercakeys.stdout }}"
           changed_when: false
           register: dpa_ca_cat
@@ -34,4 +34,3 @@
         - name: Verify - Two certificates are installed
           ansible.builtin.assert:
             that: "{{ dpa_ca_cat.stdout_lines | length }} == 2"
-

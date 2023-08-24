@@ -1,5 +1,1 @@
 ---
-- hosts: all
-  remote_user: root
-  roles:
-    - cyberarkfrlab.dpa.create_user

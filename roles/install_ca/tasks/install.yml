@@ -7,7 +7,7 @@
         path: "/etc/ssh/sshd_config"
       register: sshd_config
 
-    - name: Verify - Openssh-server is installed
+    - name: Verify if openssh-server is installed
       ansible.builtin.assert:
         that: sshd_config.stat.exists
 
@@ -21,18 +21,18 @@
       changed_when: false
       failed_when: false
 
-    -  name: TrustedUserCAKeys is defined
-       when: search_trustedusercakeys.rc == 0
-       block:
-         - name: Verify certificate authority file already exist
-           ansible.builtin.stat:
-             path: "{{ search_trustedusercakeys.stdout }}"
+    - name: TrustedUserCAKeys is defined
+      when: search_trustedusercakeys.rc == 0
+      block:
+        - name: Verify certificate authority file already exist
+          ansible.builtin.stat:
+            path: "{{ search_trustedusercakeys.stdout }}"
 
-         - name: Update certificate authority file with dpa certificate
-           ansible.builtin.lineinfile:
-             path: "{{ search_trustedusercakeys.stdout }}"
-             line: "{{ dpa_ca }}"
-             state: present
+        - name: Update certificate authority file with dpa certificate
+          ansible.builtin.lineinfile:
+            path: "{{ search_trustedusercakeys.stdout }}"
+            line: "{{ dpa_ca }}"
+            state: present
 
     - name: TrustedUserCAKeys is not defined
       when: search_trustedusercakeys.rc != 0
@@ -42,7 +42,8 @@
             path: "/etc/ssh/trusted_user_ca_keys.pub"
             line: "{{ dpa_ca }}"
             state: present
-            create: yes
+            create: true
+            mode: "0644"
 
         - name: Update sshd configuration accordingly
           ansible.builtin.lineinfile:
@@ -51,10 +52,5 @@
             state: present
             validate: "sshd -t -f %s"
           register: configure_sshd
-
-    - name: Restart sshd service
-      ansible.builtin.systemd:
-        name: "sshd"
-        state: restarted
-      when: configure_sshd.changed is true
-      tags: molecule-notest
+          notify:
+            - Restart sshd service
