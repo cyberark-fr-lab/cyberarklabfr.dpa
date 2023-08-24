@@ -1,0 +1,19 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Verify - CA created
+      become: yes
+      block:
+        - name: Verify - DPA CA created (1/2)
+          ansible.builtin.find:
+            paths: /etc/ssh/
+            file_type: file
+            use_regex: no
+            patterns:
+              - 'cyberark_dpa_ca_*.pub'
+          register: dpa_ca_find
+
+        - name: Verify - DPA CA created (2/2)
+          ansible.builtin.assert:
+            that: dpa_ca_find.files | length == 1

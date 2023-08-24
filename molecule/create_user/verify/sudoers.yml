@@ -1,0 +1,9 @@
+---
+- name: Verify - Is sudoers configuration created?
+  ansible.builtin.stat:
+    path: "/etc/sudoers.d/80-cyberark-dpa"
+  register: sudoers_config
+
+- name: Verify - Sudoers configuration created
+  ansible.builtin.assert:
+    that: sudoers_config.stat.exists

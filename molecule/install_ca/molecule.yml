@@ -1,0 +1,46 @@
+---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: collections.yml
+
+driver:
+  name: podman
+
+provisioner:
+  name: ansible
+
+  inventory:
+    group_vars:
+      all:
+        #dpa_ca: "ssh-rsa XXXXXXXX"
+        idp_domain: ${TEST_IDP_DOMAIN}
+        isp_subdomain: ${TEST_ISP_SUBDOMAIN}
+        isp_user: ${TEST_DPA_USER}
+        isp_pass: ${TEST_DPA_PASS}
+        dpa_workspace_type: ${TEST_DPA_WK_TYPE}
+        dpa_workspace_id: ${TEST_DPA_WK_ID}
+        
+platforms:
+  - name: molecule_cnt_dpa_install_ca
+    image: molecule_img_dpa_install_ca
+    pre_build_image: false
+
+scenario:
+  test_sequence:
+    - dependency
+    - destroy
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - verify
+    - cleanup
+    - destroy
+  converge_sequence:
+    - dependency
+    - create
+    - converge
+  destroy_sequence:
+    - dependency
+    - destroy

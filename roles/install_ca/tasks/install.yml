@@ -1,0 +1,45 @@
+---
+# DPA Configuration
+- become: yes
+  block:
+    - name: Is openssh-server installed?
+      ansible.builtin.stat:
+        path: "/etc/ssh/sshd_config"
+      register: sshd_config
+
+    - name: Verify - openssh-server is installed
+      ansible.builtin.assert:
+        that: sshd_config.stat.exists
+
+- name: Install DPA ssh certificate authority
+  become: yes
+  block:
+    - name: Compute certificate hash
+      ansible.builtin.shell:
+        cmd: "echo '{{ dpa_ca }}' | sha256sum | cut -d \" \" -f 1"
+      register: key_fingerprint_cmd
+      changed_when: false
+
+    - name: Generate certificate path
+      ansible.builtin.set_fact:
+        dpa_ca_path: "/etc/ssh/cyberark_dpa_ca_{{ key_fingerprint_cmd.stdout | default('default', true) }}.pub"
+
+    - name: Create certificate file
+      ansible.builtin.copy:
+        dest: "{{ dpa_ca_path }}"
+        content: "{{ dpa_ca }}"
+
+    - name: Generate updated sshd configuration
+      ansible.builtin.lineinfile:
+        path: "/etc/ssh/sshd_config"
+        line: "TrustedUserCAKeys {{ dpa_ca_path }}"
+        state: present
+        validate: "sshd -t -f %s"
+      register: configure_sshd
+
+    - name: Restart sshd service
+      ansible.builtin.systemd:
+        name: "sshd"
+        state: restarted
+      when: configure_sshd.changed is true
+      tags: molecule-notest

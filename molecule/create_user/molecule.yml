@@ -1,0 +1,42 @@
+---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: collections.yml
+
+driver:
+  name: podman
+  
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        dpa_users:
+          - { username: "test_user_1", sudo: true }
+          - { username: "test_user_2", sudo: true }
+          - { username: "test_user_3", sudo: false }
+        
+platforms:
+  - name: molecule_cnt_dpa_create_user
+    image: molecule_img_dpa_create_user
+    pre_build_image: false
+
+scenario:
+  test_sequence:
+    - dependency
+    - destroy
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - verify
+    - cleanup
+    - destroy
+  converge_sequence:
+    - dependency
+    - create
+    - converge
+  destroy_sequence:
+    - dependency
+    - destroy

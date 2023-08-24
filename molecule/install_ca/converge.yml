@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Test role dpa.install_ca"
+      ansible.builtin.include_role:
+        name: cyberarklabfr.dpa.install_ca

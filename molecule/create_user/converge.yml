@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Test - Role dpa.create_user"
+      ansible.builtin.include_role:
+        name: cyberarklabfr.dpa.create_user
+      vars:
+        dpa_username: "{{ item.username }}"
+        dpa_user_sudo: "{{ item.sudo }}"
+      loop: "{{ dpa_users }}"

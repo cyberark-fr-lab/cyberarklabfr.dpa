@@ -1,0 +1,7 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - include_tasks: verify/sudoers.yml
+    - include_tasks: verify/user.yml
+      loop: "{{ dpa_users }}"

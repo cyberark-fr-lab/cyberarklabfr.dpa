@@ -1,0 +1,26 @@
+---
+- name: Authenticate to Identity
+  ansible.builtin.uri:
+    url: "https://{{ idp_domain }}/oauth2/platformtoken"
+    method: POST
+    body_format: form-urlencoded
+    body:
+      grant_type: client_credentials
+      client_id: "{{ isp_user }}"
+      client_secret: "{{ isp_pass }}"
+    status_code: 200
+  register: login
+
+- name: Download certificate authority
+  ansible.builtin.uri:
+    url: "https://{{ isp_subdomain }}.dpa.cyberark.cloud/api/public-keys?workspaceType={{ dpa_workspace_type }}&workspaceId={{ dpa_workspace_id }}"
+    method: GET
+    return_content: true
+    status_code: 200
+    headers:
+      Authorization: "Bearer {{ login.json.access_token }}"
+  register: key
+
+- name: Setting dpa_ca for install task
+  ansible.builtin.set_fact:
+    dpa_ca: "{{ key.content }}"

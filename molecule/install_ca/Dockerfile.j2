@@ -1,0 +1,6 @@
+FROM ubuntu:20.04
+
+RUN apt update -y && apt install -y sudo python3 openssh-server
+
+# Fix error: Missing privilege separation directory: /run/sshd
+RUN mkdir /run/sshd
