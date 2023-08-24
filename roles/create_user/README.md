@@ -1,4 +1,4 @@
-# cyberarklabfr.dpa.create_user
+# cyberarkfrlab.dpa.create_user
 
 Create a local user account on the target host(s), for use with Cyberark Dynamic Privilege Access (DPA). \
 This account cannot be used to authenticate in any other way, there is no authentication method defined.
@@ -28,7 +28,7 @@ dpa_user_sudo: true
   tasks:
     - name: "Run role dpa.create_user"
       ansible.builtin.include_role:
-        name: cyberarklabfr.dpa.create_user
+        name: cyberarkfrlab.dpa.create_user
       vars:
         dpa_username: "dpa-user"
         dpa_user_sudo: true

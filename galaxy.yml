@@ -2,7 +2,7 @@
 # The namespace of the collection. This can be a company/brand/organization or product namespace under which all
 # content lives. May only contain alphanumeric lowercase characters and underscores. Namespaces cannot start with
 # underscores or numbers and cannot contain consecutive underscores
-namespace: cyberarklabfr
+namespace: cyberarkfrlab
 
 # The name of the collection. Has the same character restrictions as 'namespace'
 name: dpa
@@ -43,7 +43,7 @@ tags:
 dependencies: {}
 
 # The URL of the originating SCM repository
-repository: https://github.com/cyberarklabfr/cyberarklabfr.dpa
+repository: https://github.com/cyberarkfrlab/cyberarkfrlab.dpa
 
 # The URL to any online docs
 #documentation: http://docs.example.com

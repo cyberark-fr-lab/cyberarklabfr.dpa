@@ -31,7 +31,6 @@ scenario:
     - converge
     - idempotence
     - verify
-    - cleanup
     - destroy
   converge_sequence:
     - dependency

@@ -1,4 +1,4 @@
-# cyberarklabfr.dpa.install_ca
+# cyberarkfrlab.dpa.install_ca
 
 Install Dynamic Privilege Access SSH certificate authority (SSH CA) on a Linux server.
 
@@ -30,13 +30,13 @@ To create the DPA service user properly:
   tasks:
   - name: "Run role dpa.install_ca - Scenario: dpa_ca is provided"
       ansible.builtin.include_role:
-        name: cyberarklabfr.dpa.install_ca
+        name: cyberarkfrlab.dpa.install_ca
       vars:
         dpa_ca: "ssh-rsa AAAA....AAAA"
 
     - name: "Run role dpa.install_ca - Scenario: dpa_ca is not provided"
       ansible.builtin.include_role:
-        name: cyberarklabfr.dpa.install_ca
+        name: cyberarkfrlab.dpa.install_ca
       vars:
         idp_domain: 'company.id.cyberark.cloud'
         isp_subdomain: 'mycompany'
