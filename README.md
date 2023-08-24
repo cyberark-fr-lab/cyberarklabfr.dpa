@@ -1,8 +1,11 @@
 # Ansible Collection - cyberarkfrlab.dpa
 
-A collection of roles for Cyberark Dynamic Privilege Access:
-- [x] Install certificate authority on target (cyberarkfrlab.install_ca)
-- [x] Create target user (cyberarkfrlab.create_user)
+A collection of roles for Cyberark Dynamic Privilege Access:  
+
+| Role                          | Description                                      |
+|-------------------------------|--------------------------------------------------|
+| cyberarkfrlab.dpa.install_ca  | Install DPA certificate authority on target host |
+| cyberarkfrlab.dpa.create_user | Create local user on target host                 |
 
 ## Using this collection
 
