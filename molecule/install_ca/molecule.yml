@@ -13,13 +13,13 @@ provisioner:
   inventory:
     group_vars:
       all:
-        #dpa_ca: "ssh-rsa XXXXXXXX"
-        idp_domain: ${TEST_IDP_DOMAIN}
-        isp_subdomain: ${TEST_ISP_SUBDOMAIN}
-        isp_user: ${TEST_DPA_USER}
-        isp_pass: ${TEST_DPA_PASS}
-        dpa_workspace_type: ${TEST_DPA_WK_TYPE}
-        dpa_workspace_id: ${TEST_DPA_WK_ID}
+        test_dpa_ca: "ssh-rsa XXXXXXXX"
+        test_idp_domain: ${TEST_IDP_DOMAIN}
+        test_isp_subdomain: ${TEST_ISP_SUBDOMAIN}
+        test_isp_user: ${TEST_DPA_USER}
+        test_isp_pass: ${TEST_DPA_PASS}
+        test_dpa_workspace_type: ${TEST_DPA_WK_TYPE}
+        test_dpa_workspace_id: ${TEST_DPA_WK_ID}
         
 platforms:
   - name: molecule_cnt_dpa_install_ca

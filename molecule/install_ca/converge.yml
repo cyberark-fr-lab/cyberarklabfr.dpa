@@ -2,6 +2,19 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Test role dpa.install_ca"
+    - name: "Test role dpa.install_ca with certificate as variable"
       ansible.builtin.include_role:
         name: cyberarkfrlab.dpa.install_ca
+      vars:
+        dpa_ca: "{{ test_dpa_ca }}"
+
+    - name: "Test role dpa.install_ca with downloaded certificate"
+      ansible.builtin.include_role:
+        name: cyberarkfrlab.dpa.install_ca
+      vars:
+        idp_domain: "{{ test_idp_domain }}"
+        isp_subdomain: "{{ test_isp_subdomain }}"
+        isp_user: "{{ test_isp_user }}"
+        isp_pass: "{{ test_isp_pass }}"
+        dpa_workspace_type: "{{ test_dpa_workspace_type }}"
+        dpa_workspace_id: "{{ test_dpa_workspace_id }}"

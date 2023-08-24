@@ -1,4 +1,12 @@
 ---
 - include_tasks: download.yml
+  when:
+    - idp_domain is defined
+    - isp_subdomain is defined
+    - isp_user is defined
+    - isp_pass is defined
+    - dpa_workspace_type is defined
+    - dpa_workspace_id is defined
+
 - include_tasks: install.yml
   when: dpa_ca is defined

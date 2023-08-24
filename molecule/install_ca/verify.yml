@@ -2,18 +2,36 @@
 - name: Verify
   hosts: all
   tasks:
-    - name: Verify - CA created
+    - name: Verify - Certificate authority installed
       become: yes
       block:
-        - name: Verify - DPA CA created (1/2)
-          ansible.builtin.find:
-            paths: /etc/ssh/
-            file_type: file
-            use_regex: no
-            patterns:
-              - 'cyberark_dpa_ca_*.pub'
-          register: dpa_ca_find
+        - name: Search for existing TrustedUserCAKeys entry
+          ansible.builtin.shell:
+            cmd: "grep -oP '(?<=TrustedUserCAKeys ).*' /etc/ssh/sshd_config"
+          register: search_trustedusercakeys
+          changed_when: false
+          failed_when: false
 
-        - name: Verify - DPA CA created (2/2)
+        - name: Verify - TrustedUserCAKeys entry created
           ansible.builtin.assert:
-            that: dpa_ca_find.files | length == 1
+            that: search_trustedusercakeys.rc == 0
+
+        - name: Stat DPA certificate authority file
+          ansible.builtin.stat:
+            path: "{{ search_trustedusercakeys.stdout }}"
+          register: dpa_ca_stat
+
+        - name: Verify - DPA certificate authority created
+          ansible.builtin.assert:
+            that: dpa_ca_stat.stat.exists
+
+        - name: Cat certificate authority file
+          ansible.builtin.shell:
+            cmd: "cat {{ search_trustedusercakeys.stdout }}"
+          changed_when: false
+          register: dpa_ca_cat
+
+        - name: Verify - Two certificates are installed
+          ansible.builtin.assert:
+            that: "{{ dpa_ca_cat.stdout_lines | length }} == 2"
+
