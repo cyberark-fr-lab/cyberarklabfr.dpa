@@ -9,6 +9,7 @@
         comment: "Cyberark DPA user"
         state: present
         create_home: true
+        shell: /bin/bash
 
     - name: Grant sudo role to {{ dpa_username }}
       ansible.builtin.lineinfile:
